@@ -1,0 +1,85 @@
+CREATE TABLE EKIPA (
+    ID          INTEGER PRIMARY KEY
+                        NOT NULL
+                        UNIQUE,
+    Naziv       VARCHAR NOT NULL
+                        UNIQUE,
+    Ime_trenera VARCHAR
+);
+
+CREATE TABLE IGRAC (
+    ID                 INTEGER PRIMARY KEY
+                               UNIQUE
+                               NOT NULL,
+    Ime                VARCHAR NOT NULL,
+    Prezime            VARCHAR NOT NULL,
+    Godiste            INTEGER NOT NULL,
+    Spol               CHAR    NOT NULL,
+    Zdravstveni_karton BOOLEAN NOT NULL,
+    Ekipa_ID           INTEGER REFERENCES EKIPA (ID) 
+);
+
+CREATE TABLE TRENING (
+    ID        INTEGER  PRIMARY KEY
+                       NOT NULL,
+    Datum     DATETIME NOT NULL,
+    Naziv     VARCHAR,
+    Br_vjezbi INTEGER
+);
+
+CREATE TABLE VJEZBE (
+    ID         INTEGER PRIMARY KEY
+                       NOT NULL
+                       UNIQUE,
+    Naziv      VARCHAR NOT NULL,
+    Opis       VARCHAR,
+    Sutevi     BOOLEAN NOT NULL,
+    Brzina     BOOLEAN,
+    Brojac     BOOLEAN NOT NULL,
+    Udaljenost BOOLEAN,
+    Drugo      STRING
+);
+
+CREATE TABLE PRISUTNOST (
+    ID         INTEGER PRIMARY KEY
+                       NOT NULL,
+    Trening_ID INTEGER REFERENCES TRENING (ID),
+    Igrac_ID   INTEGER REFERENCES IGRAC (ID),
+    Prisutan   BOOLEAN NOT NULL
+);
+
+CREATE TABLE ZAPISNIK (
+    ID       INTEGER  PRIMARY KEY
+                      NOT NULL,
+    Datum    DATETIME NOT NULL,
+    Ekipa_ID INTEGER  REFERENCES Ekipa (ID),
+    Ekipa_G  VARCHAR  NOT NULL,
+    Rez_d    INTEGER  NOT NULL,
+    Rez_g    INT      NOT NULL
+);
+
+CREATE TABLE KOSEVI (
+    ID           INTEGER PRIMARY KEY,
+    Pozicija_x   DECIMAL,
+    Pozicija_y   DECIMAL,
+    Suter_ID     INTEGER,
+    Vrsta_sutera CHAR,
+    Pogodjeno    BOOLEAN,
+    Br_bodova    INTEGER CHECK ( (Br_bodova <= 3) ) 
+);
+
+CREATE TABLE STATISTIKA (
+    ID              INTEGER PRIMARY KEY,
+    Entitet_ID      INTEGER,
+    Vrsta_entiteta  CHAR,
+    Post_sutevi     DECIMAL,
+    Post_prisutnost DECIMAL,
+    Visina          DECIMAL,
+    Tezina          DECIMAL,
+    Raspon_ruku     DECIMAL,
+    Brzina_sprint   DECIMAL,
+    Brzina_su       DECIMAL,
+    Skok_udalj      DECIMAL,
+    Prvo_mjerenje   BOOLEAN
+);
+
